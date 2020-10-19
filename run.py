@@ -12,20 +12,15 @@ import money # Курс валют
 import asyncio # Асинхронный вызов
 import gun # Русская рулетка
 import wiki as wikipedia
-from alert import Alert
-from music import Musical
 import youtube_dl
+from music_module import MusicCog
 
-import mytoken
-TOKEN = mytoken.token()
-
-Music = Musical()
+TOKEN = "NzE3MTE1NjY2MDUzNzI2MjMw.XtVoDA.GQgmNXj_-MSsHfp4gkOF8XXAEwQ"
 
 bot = commands.Bot(command_prefix="!")
 morph = pymorphy2.MorphAnalyzer()
 
 WhoAmI = WAI()
-Alerter = Alert(bot)
 
 class ThrowEvent():
     def __init__(self, string, inp):
@@ -220,10 +215,6 @@ async def wiki(ctx, *query):
     else:
         await ctx.send('<@!{0.id}>, по запросу "{1}" ничего не найдено. {2}'.format(ctx.author, query, Emoji.pepega))
 
-@bot.command(pass_context = True)
-async def alert(ctx, *options):
-    if len(options) < 2:
-        pass
 
 
 # WTF!!!
@@ -253,11 +244,10 @@ ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=0.5):
+    def __init__(self, source, *, data, volume=1):
         super().__init__(source, volume)
 
         self.data = data
-
         self.title = data.get('title')
         self.url = data.get('url')
 
@@ -346,4 +336,5 @@ class Music(commands.Cog):
             ctx.voice_client.stop()
 
 bot.add_cog(Music(bot))
+bot.add_cog(MusicCog(bot))
 bot.run(TOKEN)
